@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Filminder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+        
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent_variant</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/status_bar</item>
+        
+        <!-- Background colors -->
+        <item name="android:windowBackground">@color/background</item>
+        
+        <!-- Navigation bar color. -->
+        <item name="android:navigationBarColor">@color/nav_bar</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        
+        <!-- Bottom navigation colors -->
+        <item name="bottomNavigationStyle">@style/Widget.Filminder.BottomNavigationView</item>
+
+        <!-- No ActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Material Design 3 specific colors -->
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/divider</item>
+    </style>
+
+    <style name="Theme.Filminder" parent="Base.Theme.Filminder">
+        <!-- Colores primarios -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+        
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent_variant</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        
+        <!-- Colores de fondo -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        
+        <!-- Estilos de texto por defecto -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.Filminder.Headline1</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.Filminder.Subtitle1</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.Filminder.Body1</item>
+        <item name="textAppearanceButton">@style/TextAppearance.Filminder.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.Filminder.Caption</item>
+        
+        <!-- Barra de estado y navegación -->
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:navigationBarColor">@color/nav_bar</item>
+        
+        <!-- Otros atributos -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <!-- Material Design 3 specific colors -->
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/divider</item>
+    </style>
+
+    <!-- Custom bottom navigation style -->
+    <style name="Widget.Filminder.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="elevation">8dp</item>
+        <item name="itemRippleColor">@color/ripple_color</item>
+        <item name="itemIconTint">@color/nav_selected</item>
+        <item name="itemTextColor">@color/nav_selected</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="ThemeOverlay.Filminder.BottomNavigationView" parent="">
+        <item name="colorSurface">@color/primary</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorPrimary">@color/accent</item>
+    </style>
+</resources>

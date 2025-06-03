@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.prueba.filminder.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_movieDetail"
+            app:destination="@id/movieDetailFragment">
+            <argument
+                android:name="movie"
+                app:argType="com.prueba.filminder.data.model.Movie" />
+        </action>
+        <action
+            android:id="@+id/action_home_to_surprise"
+            app:destination="@id/navigation_surprise" />
+        <action
+            android:id="@+id/action_home_to_favorites"
+            app:destination="@id/navigation_favorites" />
+        <action
+            android:id="@+id/action_home_to_movieGrid"
+            app:destination="@id/movieGridFragment">
+            <argument
+                android:name="category"
+                app:argType="string" />
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_surprise"
+        android:name="com.prueba.filminder.ui.surprise.SurpriseFragment"
+        android:label="@string/title_surprise"
+        tools:layout="@layout/fragment_surprise">
+        <action
+            android:id="@+id/action_surprise_to_movieDetail"
+            app:destination="@id/movieDetailFragment">
+            <argument
+                android:name="movie"
+                app:argType="com.prueba.filminder.data.model.Movie" />
+        </action>
+        <action
+            android:id="@+id/action_surprise_to_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_surprise_to_favorites"
+            app:destination="@id/navigation_favorites" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.prueba.filminder.ui.favorites.FavoritesFragment"
+        android:label="@string/title_favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favorites_to_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_favorites_to_surprise"
+            app:destination="@id/navigation_surprise" />
+        <action
+            android:id="@+id/action_favorites_to_movieDetail"
+            app:destination="@id/movieDetailFragment">
+            <argument
+                android:name="movie"
+                app:argType="com.prueba.filminder.data.model.Movie" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.prueba.filminder.ui.MovieDetailFragment"
+        android:label="Detalles"
+        tools:layout="@layout/fragment_movie_detail">
+        <argument
+            android:name="movie"
+            app:argType="com.prueba.filminder.data.model.Movie" />
+        <action
+            android:id="@+id/action_movieDetail_to_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_movieDetail_to_favorites"
+            app:destination="@id/navigation_favorites"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieGridFragment"
+        android:name="com.prueba.filminder.ui.movies.MovieGridFragment"
+        android:label="MovieGridFragment"
+        tools:layout="@layout/fragment_movie_grid">
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_movieGrid_to_movieDetail"
+            app:destination="@id/movieDetailFragment">
+            <argument
+                android:name="movie"
+                app:argType="com.prueba.filminder.data.model.Movie" />
+        </action>
+    </fragment>
+
+</navigation>
