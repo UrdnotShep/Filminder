@@ -153,18 +153,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:text="¡SORPRÉNDEME!"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.1"
-                    android:background="@drawable/gradient_surprise_button"
-                    app:backgroundTint="@null"
                     app:icon="@drawable/ic_shuffle"
                     app:iconGravity="textStart"
                     app:iconPadding="16dp"
                     app:iconSize="32dp"
                     app:iconTint="@color/white"
-                    app:rippleColor="#80FFFFFF"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+                    style="@style/Widget.Filminder.Button.Surprise"/>
 
             </com.google.android.material.card.MaterialCardView>
 

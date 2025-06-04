@@ -66,6 +66,21 @@ public class HomeFragment extends Fragment {
         // Configurar listeners
         setupListeners();
 
+        // Configurar manejo del botón de retroceso
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), 
+            new androidx.activity.OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                    if (searchResultsContainer.getVisibility() == View.VISIBLE) {
+                        showSearchResults(false);
+                        searchEditText.setText("");
+                    } else {
+                        setEnabled(false);
+                        requireActivity().onBackPressed();
+                    }
+                }
+            });
+
         // Cargar películas
         loadMovies();
 
@@ -157,6 +172,30 @@ public class HomeFragment extends Fragment {
             }
             return false;
         });
+
+        // Añadir listener para el cambio de texto
+        searchEditText.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim();
+                if (query.isEmpty()) {
+                    showSearchResults(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        // Añadir listener para el foco
+        searchEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus && searchEditText.getText().toString().trim().isEmpty()) {
+                showSearchResults(false);
+            }
+        });
     }
 
     private void performSearch(String query) {
@@ -188,6 +227,19 @@ public class HomeFragment extends Fragment {
     private void showSearchResults(boolean show) {
         searchResultsContainer.setVisibility(show ? View.VISIBLE : View.GONE);
         mainContentContainer.setVisibility(show ? View.GONE : View.VISIBLE);
+        
+        if (!show) {
+            hideKeyboard();
+        }
+    }
+
+    private void hideKeyboard() {
+        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) 
+            requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+        if (imm != null && getView() != null) {
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            searchEditText.clearFocus();
+        }
     }
 
     private void navigateToMovieGrid(String category, String title) {

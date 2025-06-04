@@ -74,16 +74,37 @@
 
     <!-- Custom bottom navigation style -->
     <style name="Widget.Filminder.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="elevation">8dp</item>
-        <item name="itemRippleColor">@color/ripple_color</item>
-        <item name="itemIconTint">@color/nav_selected</item>
-        <item name="itemTextColor">@color/nav_selected</item>
-        <item name="backgroundTint">@color/primary</item>
+        <item name="elevation">0dp</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="ThemeOverlay.Filminder.BottomNavigationView" parent="">
-        <item name="colorSurface">@color/primary</item>
-        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/white</item>
         <item name="colorPrimary">@color/accent</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.Filminder.BottomAppBar" parent="Widget.Material3.BottomAppBar">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="elevation">8dp</item>
+        <item name="fabCradleMargin">8dp</item>
+        <item name="fabCradleRoundedCornerRadius">32dp</item>
+        <item name="fabCradleVerticalOffset">8dp</item>
+    </style>
+
+    <style name="Widget.Filminder.Button.Surprise" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="elevation">8dp</item>
+        <item name="rippleColor">#80FFFFFF</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/gradient_surprise_button</item>
     </style>
 </resources>

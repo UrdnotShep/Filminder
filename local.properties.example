@@ -1,0 +1,8 @@
+# Copia este archivo como 'local.properties' y reemplaza los valores
+
+# SDK Location (requerido por Android Studio)
+sdk.dir=C:\\Users\\USERNAME\\AppData\\Local\\Android\\Sdk
+
+# API Keys de TMDB (requeridas para la aplicación)
+TMDB_API_KEY=tu_api_key_aquí
+TMDB_ACCESS_TOKEN=tu_access_token_aquí 

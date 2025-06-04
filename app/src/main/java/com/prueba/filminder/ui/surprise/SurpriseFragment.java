@@ -40,6 +40,8 @@ public class SurpriseFragment extends Fragment {
     private Random random;
     private int totalPages = 1;
     private static final int DEFAULT_PAGE = 1;
+    private static final int MAX_RETRY_ATTEMPTS = 3;
+    private int currentRetryAttempt = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -186,9 +188,18 @@ public class SurpriseFragment extends Fragment {
     }
 
     private void findRandomMovie(final int page) {
+        if (currentRetryAttempt >= MAX_RETRY_ATTEMPTS) {
+            showError("No se encontraron películas con los filtros actuales. Intenta con filtros menos restrictivos.");
+            currentRetryAttempt = 0;
+            return;
+        }
+
         float minRating = ratingSlider.getValue();
         List<Integer> selectedGenres = getSelectedGenreIds();
         List<Integer> selectedProviders = getSelectedProviderIds();
+
+        // Ajustar el vote_count mínimo basado en el rating
+        int minVoteCount = minRating > 7.5 ? 50 : 20;
 
         // Generar un orden aleatorio
         String[] sortOptions = {
@@ -205,89 +216,60 @@ public class SurpriseFragment extends Fragment {
         String minDate = minYear + "-01-01";
         String maxDate = currentYear + "-12-31";
 
-        // Log de los géneros seleccionados
-        System.out.println("Debug - Géneros seleccionados:");
-        for (Integer genreId : selectedGenres) {
-            System.out.println("Género ID: " + genreId + " (" + Genre.getGenreName(genreId) + ")");
-        }
-
         TmdbApi api = TmdbClient.getInstance().getApi();
         api.discoverMovies(
             "es-ES",
             minRating,
-            null, // No aplicamos filtro de géneros en la API
-            null, // No aplicamos filtro de proveedores en la API
+            null,
+            null,
             "ES",
             page,
             randomSort,
             minDate,
             maxDate,
-            100
+            minVoteCount  // Ajustado dinámicamente
         ).enqueue(new Callback<MovieResponse>() {
             @Override
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     moviePool = response.body().getResults();
-                    System.out.println("Debug - Películas obtenidas de la API: " + moviePool.size());
                     
                     if (moviePool.isEmpty()) {
-                        showError("No se encontraron películas con la nota media especificada");
+                        currentRetryAttempt++;
+                        findRandomMovie(random.nextInt(totalPages) + 1);
                         return;
                     }
 
                     // Filtrar por géneros si hay alguno seleccionado
                     List<Movie> filteredMovies = new ArrayList<>(moviePool);
                     if (!selectedGenres.isEmpty()) {
-                        System.out.println("Debug - Aplicando filtro de géneros...");
                         filteredMovies = moviePool.stream()
                             .filter(movie -> {
                                 int[] movieGenres = movie.getGenreIds();
-                                System.out.println("\nDebug - Verificando película: " + movie.getTitle());
-                                System.out.println("Géneros de la película: " + java.util.Arrays.toString(movieGenres));
-                                
-                                // Verificar si la película tiene al menos uno de los géneros seleccionados
-                                boolean hasMatchingGenre = false;
                                 for (int movieGenreId : movieGenres) {
                                     if (selectedGenres.contains(movieGenreId)) {
-                                        System.out.println("¡Coincidencia! Género " + movieGenreId + " (" + 
-                                            Genre.getGenreName(movieGenreId) + ") está en los géneros seleccionados");
-                                        hasMatchingGenre = true;
-                                        break;
+                                        return true;
                                     }
                                 }
-                                
-                                if (!hasMatchingGenre) {
-                                    System.out.println("La película no tiene ningún género seleccionado");
-                                }
-                                
-                                return hasMatchingGenre;
+                                return false;
                             })
                             .collect(java.util.stream.Collectors.toList());
 
-                        System.out.println("Debug - Películas después del filtro de géneros: " + filteredMovies.size());
-
                         if (filteredMovies.isEmpty()) {
-                            if (page > 1) {
-                                System.out.println("Debug - No hay películas con los géneros seleccionados, intentando otra página...");
-                                findRandomMovie(random.nextInt(page - 1) + 1);
-                            } else {
-                                showError("No se encontraron películas con los géneros seleccionados y la nota media especificada");
-                            }
+                            currentRetryAttempt++;
+                            findRandomMovie(random.nextInt(totalPages) + 1);
                             return;
                         }
                     }
+
+                    // Resetear el contador de intentos si encontramos películas
+                    currentRetryAttempt = 0;
 
                     // Si no hay proveedores seleccionados o si hay películas filtradas por género
                     if (selectedProviders.isEmpty()) {
                         if (!filteredMovies.isEmpty()) {
                             Movie randomMovie = filteredMovies.get(random.nextInt(filteredMovies.size()));
-                            System.out.println("\nDebug - Película seleccionada final:");
-                            System.out.println("Título: " + randomMovie.getTitle());
-                            System.out.println("Géneros: " + java.util.Arrays.toString(randomMovie.getGenreIds()));
-                            System.out.println("Nota media: " + randomMovie.getVoteAverage());
                             navigateToMovieDetail(randomMovie);
-                        } else {
-                            showError("No se encontraron películas con estos filtros");
                         }
                         return;
                     }
@@ -313,10 +295,6 @@ public class SurpriseFragment extends Fragment {
                                     
                                     if (providerFilteredMovies.size() > 0) {
                                         Movie randomMovie = providerFilteredMovies.get(random.nextInt(providerFilteredMovies.size()));
-                                        System.out.println("\nDebug - Película seleccionada final (con proveedores):");
-                                        System.out.println("Título: " + randomMovie.getTitle());
-                                        System.out.println("Géneros: " + java.util.Arrays.toString(randomMovie.getGenreIds()));
-                                        System.out.println("Nota media: " + randomMovie.getVoteAverage());
                                         navigateToMovieDetail(randomMovie);
                                     } else {
                                         if (page > 1) {
